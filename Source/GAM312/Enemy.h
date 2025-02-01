@@ -4,8 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Components/BoxComponent.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISenseConfig_Sight.h"
 #include "Enemy.generated.h"
 
+class AGAM312Character;
 UCLASS()
 class GAM312_API AEnemy : public ACharacter
 {
@@ -23,8 +27,15 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* DamageCollision;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Animation")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
 	UAnimMontage* BiteMontage;
+
+	FTimerHandle AttackTimerHandle;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
+	float AttackInterval = 2.0f;
+
+	
 
 public:
 	// Called every frame
@@ -87,6 +98,10 @@ public:
 	// Damage value inflicted by the enemy
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float DamageValue = 5.0f;
+
+	void AttackPlayer(AGAM312Character* Char);
+
+	bool bIsAttacking;
 
 public:
 	// Function to apply damage to the enemy and destroy it if health is zero or below
