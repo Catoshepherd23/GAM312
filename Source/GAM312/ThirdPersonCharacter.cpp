@@ -7,6 +7,8 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/PlayerController.h"
+#include "Engine/Engine.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AThirdPersonCharacter::AThirdPersonCharacter()
@@ -31,6 +33,18 @@ void AThirdPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	// Set Default Speeds
+	WalkingSpeed = 200.0f;
+	RunningSpeed = 600.0f;
+
+	// Set the initial walk speed
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
+	}
+
+	// Initially not sprinting
+	isSprinting = false;
 }
 
 // Called every frame
@@ -56,6 +70,10 @@ void AThirdPersonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	// Bind Camera rotation
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+
+	// Bind sprint actions (Shift Key)
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AThirdPersonCharacter::SprintStart);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AThirdPersonCharacter::SprintStop);
 }
 
 void AThirdPersonCharacter::MoveRight(float Value)
@@ -65,7 +83,7 @@ void AThirdPersonCharacter::MoveRight(float Value)
 		// Get the controller's rotation and derive the forward direction
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 		// Move in that direction
 		AddMovementInput(Direction, Value);
@@ -79,10 +97,28 @@ void AThirdPersonCharacter::MoveForward(float Value)
 		// Get the controller's rotation and derive the forward direction
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 
 		// Move in that direction
 		AddMovementInput(Direction, Value);
+	}
+}
+
+void AThirdPersonCharacter::SprintStart()
+{
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
+		isSprinting = true;
+	}
+}
+
+void AThirdPersonCharacter::SprintStop()
+{
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->MaxWalkSpeed = WalkingSpeed;
+		isSprinting = false;
 	}
 }
 
