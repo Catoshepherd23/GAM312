@@ -220,9 +220,9 @@ void AEnemy::SetNewRotation(FVector TargetPosition, FVector CurrentPosition)
 // Function to apply damage to the enemy and destroy it if health is zero or below
 void AEnemy::DealDamage(float DamageAmount)
 {
-	xHealth -= DamageAmount;
+	Health -= DamageAmount;
 
-	if (xHealth <= 0.0f)
+	if (Health <= 0.0f)
 	{
 		Destroy();
 	}
@@ -253,9 +253,9 @@ void AEnemy::AttackPlayer(AGAM312Character* Char)
 			Char->DealDamage(DamageValue);
 
 			// Play bite animation if available
-			if (BiteMontage)
+			//if (BiteMontage)
 			{
-				PlayAnimMontage(BiteMontage);
+				//PlayAnimMontage(BiteMontage);
 			}
 		}
 		//else
@@ -288,7 +288,7 @@ void AEnemy::AttackPlayer(AGAM312Character* Char)
 		// Ensure movement is enabled again
 		if (GetCharacterMovement())
 		{
-			GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+			//GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 		}
 	}
 }
