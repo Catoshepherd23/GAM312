@@ -93,7 +93,7 @@ public:
 
 	// Health of the enemy
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float Health = 100.0f;
+	float xHealth = 100.0f;
 
 	// Damage value inflicted by the enemy
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
