@@ -50,13 +50,13 @@ void AProjectile::Tick(float DeltaTime)
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
 {
 	// Attempt to cast the other actor to an AEnemy
-	AEnemy* Enemy = Cast<AEnemy>(OtherActor);
+	//AEnemy* Enemy = Cast<AEnemy>(OtherActor);
 
 	// If successful, deal damage to the enemy and destroy the projectile
-	if (Enemy)
+	//if (Enemy)
 	{
-		Enemy->DealDamage(DamageValue);
-		Destroy();
+		//Enemy->DealDamage(DamageValue);
+		//Destroy();
 	}
 }
 

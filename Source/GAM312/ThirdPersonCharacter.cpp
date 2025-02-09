@@ -92,6 +92,12 @@ void AThirdPersonCharacter::MoveRight(float Value)
 
 void AThirdPersonCharacter::MoveForward(float Value)
 {
+	// Check the flag before movement can begin
+	if (!canMove)
+	{
+		return;
+	}
+
 	if ((Controller != nullptr) && (Value != 0.0f))
 	{
 		// Get the controller's rotation and derive the forward direction

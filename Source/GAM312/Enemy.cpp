@@ -56,7 +56,7 @@ void AEnemy::BeginPlay()
 	Super::BeginPlay();
 
 	// Bind OnHit function to DamageCollision's overlap event
-	DamageCollision->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnHit);
+	/*DamageCollision->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnHit);
 
 	// Store the initial location as the base location
 	BaseLocation = this->GetActorLocation();
@@ -84,7 +84,7 @@ void AEnemy::BeginPlay()
 
 			UE_LOG(LogTemp, Display, TEXT("Player detected at game start, attacking!"));
 		}
-	}
+	}*/
 }
 
 
@@ -140,19 +140,19 @@ void AEnemy::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveC
 {
 	AGAM312Character* Char = Cast<AGAM312Character>(OtherActor);
 
-	if (Char)
+	//if (Char)
 	{
 		// Deal damage to the character
-		Char->DealDamage(DamageValue);
+		//Char->DealDamage(DamageValue);
 
-		if (BiteMontage)
+		//if (BiteMontage)
 		{
-			PlayAnimMontage(BiteMontage);
+			//PlayAnimMontage(BiteMontage);
 
-			UE_LOG(LogTemp, Display, TEXT("Montage Worked"));
+			//UE_LOG(LogTemp, Display, TEXT("Montage Worked"));
 		}
 
-		GetWorld()->GetTimerManager().SetTimer(AttackTimerHandle, FTimerDelegate::CreateUObject(this, &AEnemy::AttackPlayer, Char), AttackInterval, true);
+		//GetWorld()->GetTimerManager().SetTimer(AttackTimerHandle, FTimerDelegate::CreateUObject(this, &AEnemy::AttackPlayer, Char), AttackInterval, true);
 	}
 }
 
@@ -182,7 +182,7 @@ void AEnemy::OnSensed(const TArray<AActor*>& UpdatedActors)
 					// Stop movement and start attacking
 					bIsAttacking = true;
 					GetCharacterMovement()->DisableMovement();  // Disable all movement
-					GetWorld()->GetTimerManager().SetTimer(AttackTimerHandle, FTimerDelegate::CreateUObject(this, &AEnemy::AttackPlayer, Char), AttackInterval, true);
+					//GetWorld()->GetTimerManager().SetTimer(AttackTimerHandle, FTimerDelegate::CreateUObject(this, &AEnemy::AttackPlayer, Char), AttackInterval, true);
 
 					
 				}
@@ -220,9 +220,9 @@ void AEnemy::SetNewRotation(FVector TargetPosition, FVector CurrentPosition)
 // Function to apply damage to the enemy and destroy it if health is zero or below
 void AEnemy::DealDamage(float DamageAmount)
 {
-	Health -= DamageAmount;
+	xHealth -= DamageAmount;
 
-	if (Health <= 0.0f)
+	if (xHealth <= 0.0f)
 	{
 		Destroy();
 	}
@@ -258,7 +258,7 @@ void AEnemy::AttackPlayer(AGAM312Character* Char)
 				PlayAnimMontage(BiteMontage);
 			}
 		}
-		else
+		//else
 		{
 			// Stop attacking if the player is out of range
 			GetWorld()->GetTimerManager().ClearTimer(AttackTimerHandle);
@@ -276,7 +276,7 @@ void AEnemy::AttackPlayer(AGAM312Character* Char)
 			}
 		}
 	}
-	else
+	//else
 	{
 		// Stop attacking if player is dead or invalid
 		GetWorld()->GetTimerManager().ClearTimer(AttackTimerHandle);
